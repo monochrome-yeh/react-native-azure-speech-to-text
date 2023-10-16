@@ -15,9 +15,9 @@ Pod::Spec.new do |s|
   # optional - use expanded license entry instead:
   # s.license    = { :type => "MIT", :file => "LICENSE" }
   s.authors      = { "Anderson Neves" => "atsneves@gmail.com" }
-  s.platforms    = { :ios => "9.3" }
+  s.platforms    = { :ios => "13" }
   s.source       = { :git => "https://github.com/atsneves/react-native-text-to-speech-edge.git", :tag => "#{s.version}" }
-  s.ios.deployment_target  = '9.3'
+  s.ios.deployment_target  = '13'
 
   s.source_files = "ios/**/*.{h,c,m,swift}"
   s.requires_arc = true

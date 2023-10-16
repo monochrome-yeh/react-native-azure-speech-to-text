@@ -10,9 +10,10 @@
 
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
-import TextToSpeechEdge, {
+import TTSEdge, {
   createTextToSpeechBySSML,
   createTextToSpeechByText,
+  stopEdge,
 } from 'react-native-text-to-speech-edge';
 
 export default class App extends Component<{}> {
@@ -21,21 +22,20 @@ export default class App extends Component<{}> {
     message: '--',
   };
   componentDidMount() {
-    TextToSpeechEdge.sampleMethod('Testing', 123, (message) => {
-      this.setState({
-        status: 'native callback received',
-        message,
-      });
-    });
+    console.log("TTSEdge", TTSEdge)
+    
+    TTSEdge.addEventListener('ttedge-finish', (event) =>
+      console.log('ttedge-finish', event) // Your Listener To Finish Audio
+    );
   }
 
   playText = () => {
-    console.log('Play Click', TextToSpeechEdge);
-    TextToSpeechEdge.createTextToSpeechByText(
+    
+    createTextToSpeechByText(
       'Olá Matheus, você é Corinthiano?',
       'pt-BR-FranciscaNeural',
-      'Your Key In Here',
-      'Your Region',
+      'Your Key in Here',
+      'Your Region in Here',
     )
       .then((isFinal) => {
         console.log('Success');
@@ -46,16 +46,15 @@ export default class App extends Component<{}> {
   };
 
   playTextSSML = () => {
-    console.log('Play Click', TextToSpeechEdge);
 
     const ssmlText =
-      '<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="pt-BR"><voice name="pt-BR-FranciscaNeural"><mstts:express-as style="Cheerful">Olá estamos Testando a SSML, Claro que você está bem empolgado com isso.</mstts:express-as></voice></speak>';
+      '<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="pt-BR"><voice name="pt-BR-FranciscaNeural"><mstts:express-as style="Cheerful">Lewis Hamilton conquistou neste domingo uma dramática vitória no GP da Inglaterra após ter o pneu dianteiro esquerdo furado na última volta. Mesmo se arrastando nas últimas curvas.</mstts:express-as></voice></speak>';
 
-    TextToSpeechEdge.createTextToSpeechBySSML(
+    createTextToSpeechBySSML(
       ssmlText,
       '',
-      'Your Key In Here',
-      'Your Region',
+      'Your Key in Here',
+      'Your Region in Here',
     )
       .then((isFinal) => {
         console.log('Success');
@@ -74,6 +73,9 @@ export default class App extends Component<{}> {
         <Text style={styles.instructions}>{this.state.message}</Text>
         <Button title="Play in Text" onPress={this.playText} />
         <Button title="Play in Text - SSML" onPress={this.playTextSSML} />
+        <Button title="Stop Audio" onPress={() => {
+          stopEdge()
+        }} />
       </View>
     );
   }
